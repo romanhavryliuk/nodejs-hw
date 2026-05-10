@@ -1,5 +1,4 @@
-import { Schema } from 'mongoose';
-import { model } from 'mongoose';
+import { Schema, model } from 'mongoose';
 
 const noteSchema = new Schema(
   {
