@@ -6,22 +6,25 @@ export const getAllNotes = async (req, res) => {
 
     const skip = (page - 1) * perPage;  // Формула пагінації
 
-    const notesQuery = Note.find({
-        userId: req.user._id,
-    });  // Створюємо базовий запит до колекції
+    const filter = {
+    userId: req.user._id,
+  };  // Створюємо базовий запит до колекції
 
     // Фільтр
     if (tag) {
-        notesQuery.where('tag').equals(tag);
-    }
-    if (search?.trim()) {
-        notesQuery.where({ $text: { $search: search.trim() } });
-    }
+    filter.tag = tag;
+  }
+     if (search) {
+    filter.$or = [
+      { title: { $regex: search, $options: 'i' } },
+      { content: { $regex: search, $options: 'i' } },
+    ];
+  }
 
-    const [totalNotes, notes] = await Promise.all([  // Виконуємо одразу два запити паралельно
-    notesQuery.clone().countDocuments(),
-    notesQuery.skip(skip).limit(perPage),
-    ]);
+    const [totalNotes, notes] = await Promise.all([
+    Note.countDocuments(filter),
+    Note.find(filter).skip(skip).limit(perPage),
+  ]);
     
     const totalPages = Math.ceil(totalNotes / perPage);  // Обчислюємо загальну кількість «сторінок»
 
