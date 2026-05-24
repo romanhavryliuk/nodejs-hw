@@ -6,7 +6,9 @@ export const getAllNotes = async (req, res) => {
 
     const skip = (page - 1) * perPage;  // Формула пагінації
 
-    const notesQuery = Note.find();  // Створюємо базовий запит до колекції
+    const notesQuery = Note.find({
+        userId: req.user._id,
+    });  // Створюємо базовий запит до колекції
 
     // Фільтр
     if (tag) {
