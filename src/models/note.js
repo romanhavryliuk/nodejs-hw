@@ -1,7 +1,13 @@
 import { Schema, model } from 'mongoose';
+import { TAGS } from '../constants/tags.js';
 
 const noteSchema = new Schema(
   {
+    userId: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: 'User',
+    },
     title: {
       type: String,
       required: true,
@@ -14,18 +20,7 @@ const noteSchema = new Schema(
     },
     tag: {
       type: String,
-      enum: [
-        'Work',
-        'Personal',
-        'Meeting',
-        'Shopping',
-        'Ideas',
-        'Travel',
-        'Finance',
-        'Health',
-        'Important',
-        'Todo'
-      ],
+      enum: TAGS,
       default: 'Todo',
     },
   },
@@ -34,5 +29,7 @@ const noteSchema = new Schema(
     versionKey: false,
   },
 );
+
+noteSchema.index({ tag: 1, userId: 1 });
 
 export const Note = model('Note', noteSchema);
