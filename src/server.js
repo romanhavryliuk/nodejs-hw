@@ -37,6 +37,6 @@ app.use(errorHandler);
 await connectMongoDB();
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${process.env.PORT}`);
-  console.log(`Docs at http://localhost:${process.env.PORT}/api-docs`);
+  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Docs at http://localhost:${PORT}/api-docs`);
 });

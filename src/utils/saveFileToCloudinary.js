@@ -1,4 +1,5 @@
 import { v2 as cloudinary } from 'cloudinary';
+import { Readable } from 'node:stream';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -7,7 +8,7 @@ cloudinary.config({
   secure: true,
 });
 
-export const saveFileToCloudinary = async (buffer, userId, callback) => {
+export const saveFileToCloudinary = async (buffer, userId) => {
   const options = {
     folder: 'notes-app/avatars',
     public_id: `avatar_${userId}`,
@@ -30,6 +31,6 @@ export const saveFileToCloudinary = async (buffer, userId, callback) => {
       },
     );
 
-    uploadStream.end(buffer);
+    Readable.from(buffer).pipe(uploadStream);
   });
 };

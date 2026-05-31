@@ -9,7 +9,7 @@ export const avatarUpload = multer({
   fileFilter(req, file, callback) {
     if (!file.mimetype || !file.mimetype.startsWith('image/')) {
       // error
-      return callback(new Error('Invalid file type!!! Expected image!'));
+      return callback(new Error('Only images allowed'));
     }
 
     // success
